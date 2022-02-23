@@ -7,8 +7,4 @@
         public Enrollments Enrollments { get; set; }
         public Disenrollments Disenrollments { get; set; }
     }
-
-    public class Enrollments
-    {
-    }
 }
