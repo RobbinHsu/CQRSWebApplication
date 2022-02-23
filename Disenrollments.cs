@@ -7,7 +7,3 @@ public class Disenrollments
     public string Comment { get; set; }
     public Disenrollments Disenrollments1 { get; set; } 
 }
-
-public class Course
-{
-}
