@@ -27,4 +27,14 @@ public class Enrollment
     {
         return _course;
     }
+
+    public Grade GetGrade()
+    {
+        return _grade;
+    }
+
+    public void Update(Course course, Grade getCourse1Grade)
+    {
+        throw new NotImplementedException();
+    }
 }
