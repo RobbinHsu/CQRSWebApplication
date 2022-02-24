@@ -1,4 +1,4 @@
-﻿namespace CQRSWebApplication;
+﻿namespace CQRSWebApplication.Dto;
 
 public class StudentDto
 {

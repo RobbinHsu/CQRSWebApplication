@@ -1,4 +1,5 @@
-﻿using CQRSWebApplication.Repository;
+﻿using CQRSWebApplication.Dto;
+using CQRSWebApplication.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CQRSWebApplication.Controllers
