@@ -106,13 +106,6 @@ namespace CQRSWebApplication.Controllers
                 {
                     throw new Exception("Grade is required");
                 }
-
-                Course course = courseRepository.GetByName(dto.Course1);
-                if (firstEnrollment != null)
-                {
-                    // Student transfers
-                    firstEnrollment.Update(course, dto.Course1Grade);
-                }
             }
 
             if (hasEnrollmentChanged(dto.GetCourse2(), dto.GetCourse2Grade(), secondEnrollment))
@@ -133,13 +126,6 @@ namespace CQRSWebApplication.Controllers
                 if (string.IsNullOrEmpty(dto.GetCourse2Grade()))
                 {
                     throw new Exception("Grade is required");
-                }
-
-                Course course = courseRepository.GetByName(dto.GetCourse2());
-                if (secondEnrollment != null)
-                {
-                    // Student transfers
-                    secondEnrollment.Update(course, dto.Course2Grade);
                 }
             }
 
