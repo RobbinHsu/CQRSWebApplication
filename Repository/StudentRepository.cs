@@ -11,20 +11,23 @@ public class StudentRepository
 
     public List<Student> GetList(string enrolledIn, int numberOfCourses)
     {
-        IEnumerable<Student> query = _unitOfWork.Query<Student>();
+        IQueryable<Student> query = _unitOfWork.Query<Student>();
 
         if (!string.IsNullOrEmpty(enrolledIn))
         {
-            query = query.Where(x => x._enrollments.Any(
-                e => e.GetCourse().GetName() == enrolledIn));
+            query = query
+                .Where(x => x._enrollments
+                    .Any(e => e.GetCourse().GetName() == enrolledIn));
         }
 
         List<Student> result = query.ToList();
 
         if (numberOfCourses != null)
         {
-            result = result.Where(x =>
-                x.GetEnrollments().Count() == numberOfCourses).ToList();
+            result = result
+                .Where(x =>
+                    x.GetEnrollments().Count() == numberOfCourses)
+                .ToList();
         }
 
         return result;

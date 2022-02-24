@@ -2,10 +2,10 @@
 
 public class UnitOfWork
 {
-    public IEnumerable<T> Query<T>()
-    {
-        throw new NotImplementedException();
-    }
+    //public IEnumerable<T> Query<T>()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     public void Commit()
     {
@@ -25,5 +25,10 @@ public class UnitOfWork
     public void Delete(Student student)
     {
         throw new NotImplementedException();
+    }
+
+    public IOrderedQueryable<T> Query<T>()
+    {
+            throw new NotImplementedException();
     }
 }
