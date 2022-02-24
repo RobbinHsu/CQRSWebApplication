@@ -108,12 +108,7 @@ namespace CQRSWebApplication.Controllers
                 }
 
                 Course course = courseRepository.GetByName(dto.Course1);
-                if (firstEnrollment == null)
-                {
-                    // Student enrolls
-                    student.Enroll(course, dto.Course1Grade);
-                }
-                else
+                if (firstEnrollment != null)
                 {
                     // Student transfers
                     firstEnrollment.Update(course, dto.Course1Grade);
@@ -141,12 +136,7 @@ namespace CQRSWebApplication.Controllers
                 }
 
                 Course course = courseRepository.GetByName(dto.GetCourse2());
-                if (secondEnrollment == null)
-                {
-                    // Student enrolls
-                    student.Enroll(course, dto.Course2Grade);
-                }
-                else
+                if (secondEnrollment != null)
                 {
                     // Student transfers
                     secondEnrollment.Update(course, dto.Course2Grade);
