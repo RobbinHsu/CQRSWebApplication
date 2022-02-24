@@ -172,6 +172,38 @@ namespace CQRSWebApplication.Controllers
             _unitOfWork.Commit();
         }
 
+        //@PutMapping("{id}/enrollments/{enrollmentNumber}")
+        [HttpPost("{id}/enrollments/{enrollmentNumber}")]
+        public void Transfer([FromRoute] long id, [FromRoute] int enrollmentNumber, [FromBody] StudentTransferDto dto)
+        {
+            Student student = studentRepository.GetById(id);
+            if (student == null)
+            {
+                throw new Exception("No student found with Id '{id}'");
+            }
+
+            Course course = courseRepository.GetByName(dto.GetCourse());
+            if (course == null)
+            {
+                throw new Exception("Course is incorrect: '{dto.getCourse()}'");
+            }
+
+            bool success = Enum.IsDefined(typeof(Grade), dto.GetGrade());
+            if (!success)
+            {
+                throw new Exception("Grade is incorrect: '{dto.getGrade()}'");
+            }
+
+            Enrollment enrollment = student.GetEnrollment(enrollmentNumber);
+            if (!success)
+            {
+                throw new Exception("No enrollment found with number '{enrollmentNumber}'");
+            }
+
+            enrollment.Update(course, dto.GetGrade());
+            _unitOfWork.Commit();
+        }
+
         private bool hasEnrollmentChanged(string newCourseName, string newGrade, Enrollment enrollment)
         {
             if (string.IsNullOrEmpty(newCourseName) && enrollment == null)

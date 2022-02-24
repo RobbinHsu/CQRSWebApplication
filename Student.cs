@@ -14,7 +14,7 @@
             _email = email;
         }
 
-        private Enrollment GetEnrollment(int index)
+        public Enrollment GetEnrollment(int index)
         {
             if (_enrollments.Count > index)
             {
