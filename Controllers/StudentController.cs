@@ -5,7 +5,7 @@ namespace CQRSWebApplication.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class StudentController : ControllerBase
+    public partial class StudentController : ControllerBase
     {
         //public IActionResult Index()
         //{
@@ -152,6 +152,32 @@ namespace CQRSWebApplication.Controllers
                 }
             }
 
+            _unitOfWork.Commit();
+        }
+
+        //@PostMapping("{id}/enrollments")
+        [HttpPost("{id}/enrollments")]
+        public void Enroll([FromQuery] long id, [FromBody] StudentEnrollmentDto dto)
+        {
+            Student student = studentRepository.GetById(id);
+            if (student == null)
+            {
+                throw new Exception("No student found with Id '{id}'");
+            }
+
+            Course course = courseRepository.GetByName(dto.GetCourse());
+            if (course == null)
+            {
+                throw new Exception("Course is incorrect: '{dto.getCourse()}'");
+            }
+
+            bool success = Enum.IsDefined(typeof(Grade), dto.GetGrade());
+            if (!success)
+            {
+                throw new Exception("Grade is incorrect: '{dto.getGrade()}'");
+            }
+
+            student.Enroll(course, dto.GetGrade());
             _unitOfWork.Commit();
         }
 
