@@ -98,7 +98,7 @@ namespace CQRSWebApplication.Controllers
                     }
 
                     Enrollment enrollment = firstEnrollment;
-                    student.RemoveEnrollment(enrollment,dto.GetCourse1DisenrollmentComment());
+                    student.RemoveEnrollment(enrollment, dto.GetCourse1DisenrollmentComment());
                     student.AddDisenrollmentComment(enrollment, dto.GetCourse1DisenrollmentComment());
                 }
 
@@ -218,6 +218,20 @@ namespace CQRSWebApplication.Controllers
             _unitOfWork.Commit();
         }
 
+        //@PutMapping("{id}")
+        [HttpPost("{id}")]
+        public void EditPersonalInfo([FromRoute] long id, [FromBody] StudentPersonalInfoDto dto)
+        {
+            Student student = studentRepository.GetById(id);
+            if (student == null)
+            {
+                throw new Exception("No student found with Id '{id}'");
+            }
+
+            student.SetName(dto.GetName());
+            student.SetEmail(dto.GetEmail());
+            _unitOfWork.Commit();
+        }
 
         private bool hasEnrollmentChanged(string newCourseName, string newGrade, Enrollment enrollment)
         {
