@@ -72,66 +72,6 @@ namespace CQRSWebApplication.Controllers
             _unitOfWork.Commit();
         }
 
-        //@PutMapping("{id}")
-
-        public void Update(long id, [FromBody] StudentDto dto)
-        {
-            Student student = studentRepository.GetById(id);
-            if (student == null)
-            {
-                throw new Exception($"No student found for Id {id}");
-            }
-
-            student.SetName(dto.GetName());
-            student.SetEmail(dto.GetEmail());
-            Enrollment firstEnrollment = student.GetFirstEnrollment();
-            Enrollment secondEnrollment = student.GetSecondEnrollment();
-
-            if (hasEnrollmentChanged(dto.GetCourse1(), dto.GetCourse1Grade(), firstEnrollment))
-            {
-                if (string.IsNullOrEmpty(dto.GetCourse1()))
-                {
-                    // Student disenrolls
-                    if (string.IsNullOrEmpty(dto.GetCourse1DisenrollmentComment()))
-                    {
-                        throw new Exception("Disenrollment comment is required");
-                    }
-
-                    Enrollment enrollment = firstEnrollment;
-                    student.RemoveEnrollment(enrollment, dto.GetCourse1DisenrollmentComment());
-                    student.AddDisenrollmentComment(enrollment, dto.GetCourse1DisenrollmentComment());
-                }
-
-                if (string.IsNullOrEmpty(dto.Course1Grade.ToString()))
-                {
-                    throw new Exception("Grade is required");
-                }
-            }
-
-            if (hasEnrollmentChanged(dto.GetCourse2(), dto.GetCourse2Grade(), secondEnrollment))
-            {
-                if (string.IsNullOrEmpty(dto.Course2))
-                {
-                    //Student disenrolls
-                    if (string.IsNullOrEmpty(dto.GetCourse2DisenrollmentComment()))
-                    {
-                        throw new Exception("Disenrollment comment is required");
-                    }
-
-                    Enrollment enrollment = secondEnrollment;
-                    student.RemoveEnrollment(enrollment, dto.Course2DisenrollmentComment);
-                    student.AddDisenrollmentComment(enrollment, dto.GetCourse2DisenrollmentComment());
-                }
-
-                if (string.IsNullOrEmpty(dto.GetCourse2Grade()))
-                {
-                    throw new Exception("Grade is required");
-                }
-            }
-
-            _unitOfWork.Commit();
-        }
-
         //@PostMapping("{id}/enrollments")
         [HttpPost("{id}/enrollments")]
         public void Enroll([FromQuery] long id, [FromBody] StudentEnrollmentDto dto)
@@ -231,22 +171,6 @@ namespace CQRSWebApplication.Controllers
             student.SetName(dto.GetName());
             student.SetEmail(dto.GetEmail());
             _unitOfWork.Commit();
-        }
-
-        private bool hasEnrollmentChanged(string newCourseName, string newGrade, Enrollment enrollment)
-        {
-            if (string.IsNullOrEmpty(newCourseName) && enrollment == null)
-            {
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(newCourseName) || enrollment == null)
-            {
-                return true;
-            }
-
-            return newCourseName != enrollment.GetCourse().GetName()
-                   || newGrade.ToString() != enrollment.GetGrade().ToString();
         }
     }
 }
