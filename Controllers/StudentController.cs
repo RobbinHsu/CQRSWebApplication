@@ -190,6 +190,35 @@ namespace CQRSWebApplication.Controllers
             _unitOfWork.Commit();
         }
 
+        //@PostMapping("{id}/enrollments/{enrollmentNumber}/deletion")
+        [HttpPost("{id}/enrollments/{enrollmentNumber}/deletion")]
+        public void DisEnroll([FromRoute] long id, [FromRoute] int enrollmentNumber,
+            [FromBody] StudentDisEnrollmentDto dto)
+        {
+            Student student = studentRepository.GetById(id);
+            if (student == null)
+            {
+                throw new Exception("No enrollment found with number '{enrollmentNumber}'");
+            }
+
+            if (string.IsNullOrEmpty(dto.GetComment()))
+            {
+                throw new Exception("Disenrollment comment is required");
+            }
+
+            Enrollment enrollment = student.GetEnrollment(enrollmentNumber);
+
+            if (enrollment == null)
+            {
+                throw new Exception("No enrollment found with number '{enrollmentNumber}'");
+            }
+
+            student.RemoveEnrollment(enrollment);
+            student.AddDisenrollmentComment(enrollment, dto.GetComment());
+            _unitOfWork.Commit();
+        }
+
+
         private bool hasEnrollmentChanged(string newCourseName, string newGrade, Enrollment enrollment)
         {
             if (string.IsNullOrEmpty(newCourseName) && enrollment == null)
