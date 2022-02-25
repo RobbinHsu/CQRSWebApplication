@@ -24,9 +24,11 @@
             return null;
         }
 
-        public void RemoveEnrollment(Enrollment enrollment)
+        public void RemoveEnrollment(Enrollment enrollment, string comment)
         {
             _enrollments.Remove(enrollment);
+            var disenrollment = new Disenrollment(enrollment.GetStudent(), enrollment.GetCourse(), comment);
+            _disenrollments.Add(disenrollment);
         }
 
         public void AddDisenrollment(Enrollment enrollment, string comment)

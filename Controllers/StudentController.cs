@@ -98,7 +98,7 @@ namespace CQRSWebApplication.Controllers
                     }
 
                     Enrollment enrollment = firstEnrollment;
-                    student.RemoveEnrollment(enrollment);
+                    student.RemoveEnrollment(enrollment,dto.GetCourse1DisenrollmentComment());
                     student.AddDisenrollmentComment(enrollment, dto.GetCourse1DisenrollmentComment());
                 }
 
@@ -119,7 +119,7 @@ namespace CQRSWebApplication.Controllers
                     }
 
                     Enrollment enrollment = secondEnrollment;
-                    student.RemoveEnrollment(enrollment);
+                    student.RemoveEnrollment(enrollment, dto.Course2DisenrollmentComment);
                     student.AddDisenrollmentComment(enrollment, dto.GetCourse2DisenrollmentComment());
                 }
 
@@ -213,7 +213,7 @@ namespace CQRSWebApplication.Controllers
                 throw new Exception("No enrollment found with number '{enrollmentNumber}'");
             }
 
-            student.RemoveEnrollment(enrollment);
+            student.RemoveEnrollment(enrollment, dto.GetComment());
             student.AddDisenrollmentComment(enrollment, dto.GetComment());
             _unitOfWork.Commit();
         }
