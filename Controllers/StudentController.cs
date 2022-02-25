@@ -1,4 +1,6 @@
-﻿using CQRSWebApplication.Dto;
+﻿using CQRSWebApplication.Command;
+using CQRSWebApplication.Dto;
+using CQRSWebApplication.Handler;
 using CQRSWebApplication.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -160,17 +162,11 @@ namespace CQRSWebApplication.Controllers
 
         //@PutMapping("{id}")
         [HttpPost("{id}")]
-        public void EditPersonalInfo([FromRoute] long id, [FromBody] StudentPersonalInfoDto dto)
+        public void EditPersonalInfo( [FromBody] EditPersonalInfoCommand command)
         {
-            Student student = studentRepository.GetById(id);
-            if (student == null)
-            {
-                throw new Exception("No student found with Id '{id}'");
-            }
-
-            student.SetName(dto.GetName());
-            student.SetEmail(dto.GetEmail());
-            _unitOfWork.Commit();
+            var handler = new EditPersonalInfoCommandHandler(_unitOfWork);
+            handler.Handle(command);
+            //return result.isSuccess ? Ok() : NotFound();
         }
     }
 }
